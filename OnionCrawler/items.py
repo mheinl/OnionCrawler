@@ -9,6 +9,6 @@ import scrapy
 
 class OnionCrawlerScraperItem(scrapy.Item):
     # The source URL
-    url_from = scrapy.Field()
-    # The destination URL
-    url_to = scrapy.Field()
+    url = scrapy.Field()
+    body = scrapy.Field()
+    time = scrapy.Field()
