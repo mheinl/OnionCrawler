@@ -49,6 +49,6 @@ class OnionCrawler(CrawlSpider):
             item = OnionCrawlerScraperItem()
             item['url'] = response.url
             item['body'] = response.body
-            item['time'] = datetime.datetime.now()
+            item['utctimestamp'] = datetime.datetime.utcnow()
             yield item
         return

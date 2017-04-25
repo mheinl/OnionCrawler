@@ -22,7 +22,7 @@ class CrawlerData(DeclarativeBase):
     __tablename__ = "memex"
 
     id = Column(Integer, primary_key=True)
-    time = Column('time', DateTime, nullable=True)
+    utctimestamp = Column('utctimestamp', DateTime, nullable=True)
     url = Column('url', String, nullable=True)
     #title = Column('title', String, nullable=True)
     body = Column('body', String, nullable=True)

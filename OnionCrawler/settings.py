@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = False
 #Configure item pipelines
 #See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
- #   'OnionCrawler.pipelines.OnionCrawlerPostgresPipeline': 300,
+    'OnionCrawler.pipelines.OnionCrawlerPostgresPipeline': 300,
     'OnionCrawler.pipelines.OnionCrawlerFilesystemPipeline': 400,
 }
 

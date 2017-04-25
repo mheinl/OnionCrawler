@@ -11,4 +11,4 @@ class OnionCrawlerScraperItem(scrapy.Item):
     # The source URL
     url = scrapy.Field()
     body = scrapy.Field()
-    time = scrapy.Field()
+    utctimestamp = scrapy.Field()
