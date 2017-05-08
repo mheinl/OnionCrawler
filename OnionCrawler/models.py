@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.engine.url import URL
-
+import datetime
 import settings
 
 
@@ -19,7 +19,7 @@ def create_memex_table(engine):
 
 
 class CrawlerData(DeclarativeBase):
-    __tablename__ = "memex"
+    __tablename__ = "memex" + str(datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"))
 
     id = Column(Integer, primary_key=True)
     utctimestamp = Column('utctimestamp', DateTime, nullable=True)

@@ -7,18 +7,48 @@ Scrapy spider to recursively crawl for TOR hidden services.
 Prerequisites
 =============
 
+torsocks
 Python 2.7
 Scrapy
-torsocks
+
+Additionally for PostgreSQL support:
+python-sqlalchemy
+python-psycopg2
 
 
 Usage
 =====
 
 $ torsocks scrapy crawl OnionCrawler
+to run OnionCrawler with default settings
+
+OR 
+
+$ torsocks scrapy crawl OnionCrawler [-a argument1=value1] [-a argument2=value2] [-a argument3=value3] [...]
+to customize the Crawler's behaviour, the argument/value pairs described below can be passed each with a prefixed '-a'
+
+Argument/Value					Description						Default						
+--------------					-----------						-------
+inputURL=<SingleURL>				Single URL to start crawling from			https://facebookcorewwwi.onion
+inputOnionList=<pathToOnionList>		Path to newline-separated .onion URL list		None				
+inputHSProbeLog=<HSProbeLogFile> 	 	Read .onion names from HS Probe logfile			None
+searchTerms=<SearchTerms>			Comma-separated search terms				None (scarping all sites crawled)
+searchMode=<ORorAND>				Search either for any or all search terms		OR / any
+pipelineFile=<trueOrFalse>			De-/Activate pipeline scraping to filesystem		True
+pipelinePostgres=<trueOrFalse>			De-/Activate pipeline scraping to Postgres DB		False
 
 
 Default
 =======
 
-Websites will per default be stored in ./files/
+By default, a pipeline which stores scraped websites as files in ./files/ is activated.
+
+PostgreSQL
+=========
+
+In order to store scraped websites in a PostgreSQL database, the corresponding pipeline has to be activated in settings.py.
+Furthermore, the following has to be done:
+
+1. Set up the PostgreSQL database.
+2. Change database credentials in setting.py's DATABASE dictionary accordingly.
+3. Uncomment the parameter "AllowOutboundLocalhost 1" in the torsocks configuration file (/etc/tor/torsocks.conf).
