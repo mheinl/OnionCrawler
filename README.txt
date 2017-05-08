@@ -41,7 +41,7 @@ pipelinePostgres=<trueOrFalse>		De-/Activate pipeline scraping to Postgres DB
 Default
 =======
 
-By default, a pipeline which stores scraped websites as files in ./files/ is activated.
+By default, no search terms are set which means all crawled websites are scraped. A pipeline which stores scraped websites as files in ./files/ is activated and the .onion URL https://facebookcorewwwi.onion is the default start URL for crawling. No search terms are set, if you set some without defining the search mode, searching for any (OR) is default.
 
 PostgreSQL
 =========
