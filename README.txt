@@ -24,18 +24,18 @@ to run OnionCrawler with default settings
 
 OR 
 
-$ torsocks scrapy crawl OnionCrawler [-a argument1=value1] [-a argument2=value2] [-a argument3=value3] [...]
+$ torsocks scrapy crawl OnionCrawler [-a argument1=value1] [-a argument2=value2] [...]
 to customize the Crawler's behaviour, the argument/value pairs described below can be passed each with a prefixed '-a'
 
-Argument/Value					Description						Default						
---------------					-----------						-------
-inputURL=<SingleURL>				Single URL to start crawling from			https://facebookcorewwwi.onion
-inputOnionList=<pathToOnionList>		Path to newline-separated .onion URL list		None				
-inputHSProbeLog=<HSProbeLogFile> 	 	Read .onion names from HS Probe logfile			None
-searchTerms=<SearchTerms>			Comma-separated search terms				None (scarping all sites crawled)
-searchMode=<ORorAND>				Search either for any or all search terms		OR / any
-pipelineFile=<trueOrFalse>			De-/Activate pipeline scraping to filesystem		True
-pipelinePostgres=<trueOrFalse>			De-/Activate pipeline scraping to Postgres DB		False
+Argument/Value				Description					
+--------------				-----------
+inputURL=<SingleURL>			Single URL to start crawling from
+inputOnionList=<pathToOnionList>	Path to newline-separated .onion URL list			
+inputHSProbeLog=<HSProbeLogFile> 	Read .onion names from HS Probe logfile
+searchTerms=<SearchTerms>		Comma-separated search terms
+searchMode=<ORorAND>			Search either for any or all search terms
+pipelineFile=<trueOrFalse>		De-/Activate pipeline scraping to filesystem
+pipelinePostgres=<trueOrFalse>		De-/Activate pipeline scraping to Postgres DB
 
 
 Default
