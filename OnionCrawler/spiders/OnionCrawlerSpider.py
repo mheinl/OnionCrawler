@@ -61,6 +61,9 @@ class OnionCrawler(CrawlSpider):
             
         # Pipeline Selection. To be processed in pipelines.py
         self.pipelineFile = kwargs.get('pipelineFile')
+         # Set Filesystem pipeline as default
+        if not self.pipelineFile:
+                self.pipelineFile = 'true'
         self.pipelinePostgres = kwargs.get('pipelinePostgres')        
     
     # Define allowed domain, for all onion TLDs, just set "onion"
