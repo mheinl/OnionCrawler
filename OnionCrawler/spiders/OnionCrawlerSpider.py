@@ -3,6 +3,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
 from OnionCrawler.items import OnionCrawlerScraperItem
 import datetime
+from booleanlogic import SearchTerm
 
 class OnionCrawler(CrawlSpider):
 
@@ -10,14 +11,13 @@ class OnionCrawler(CrawlSpider):
 
     global readURLsFromHSProbeLog
     global readURLsFromOnionList
-    global parseSearchTerms
     global createItem
     
     # Process potential arguments to control program flow
     def __init__(self, *args, **kwargs):
         super(OnionCrawler, self).__init__(*args, **kwargs) 
         
-          # Single Start_URL
+        # Single Start_URL
         inputURL = kwargs.get('inputURL')
         if inputURL:
             self.start_urls = [inputURL]
@@ -41,25 +41,25 @@ class OnionCrawler(CrawlSpider):
         # Check if start_urls is still empty. If so, set it to default test value
         if not self.start_urls:
             self.start_urls = ['https://facebookcorewwwi.onion']
-        
-        # Searchterms to filter for
-        global keywords
-        keywords = ['']
-        searchTerms = kwargs.get('searchTerms')
-        if searchTerms:
-            keywords = parseSearchTerms(searchTerms)
+         
+        # Case-sensitivity, default is False
+        self.caseSensitive = kwargs.get('caseSensitive')
+        if not self.caseSensitive or self.caseSensitive.lower() == 'false':
+            self.caseSensitive = False
+        elif self.caseSensitive.lower() == 'true':
+            self.caseSensitive = True
             
-        # Search Term Conjunction
-        global boolOR, boolAND
-        searchMode = kwargs.get('searchMode')
-        if searchMode == 'AND':
-            boolAND = True
-            boolOR = False
+         # Searchterms to filter for
+        self.searchTerms = kwargs.get('searchTerms')
+        if self.searchTerms:
+            if self.caseSensitive:
+                self.query = SearchTerm(phrase=str(self.searchTerms))
+            else:
+                self.query = SearchTerm(phrase=str(self.searchTerms).lower())
         else:
-            boolOR = True
-            boolAND = False
+            self.query = False        
             
-        # Pipeline Selection. To be processed in pipelines.py
+        # Pipeline selection. To be processed in pipelines.py
         self.pipelineFile = kwargs.get('pipelineFile')
          # Set Filesystem pipeline as default
         if not self.pipelineFile:
@@ -96,11 +96,6 @@ class OnionCrawler(CrawlSpider):
         urlList = open(list).read().splitlines()
         return urlList
 
-    # Method to parse Search Terms
-    def parseSearchTerms(searchTerms):
-        searchTermList = [term.strip() for term in searchTerms.split(',')]
-        return searchTermList
-    
     def createItem(response):
         item = OnionCrawlerScraperItem()
         item['url'] = response.url
@@ -110,12 +105,12 @@ class OnionCrawler(CrawlSpider):
        
     def parse_items(self, response):
         # If there are searchterms defined, chose whether websites should be scraped if ANY search term matches (OR) or only if ALL search terms match (AND).
-        if keywords:
-            if boolAND:
-                if all(x in response.body for x in keywords):
-                   yield createItem(response)
-            if boolOR:
-                if any(x in response.body for x in keywords):
+        if self.query:
+            if self.caseSensitive:
+                match = self.query.test(response.body)
+            else:
+                match = self.query.test(response.body.lower())
+            if match:
                    yield createItem(response)
         # If there are no searchterms defined, yield all crawled websites
         else:
